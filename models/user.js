@@ -1,10 +1,25 @@
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define("User", {
-    // Giving the User model a name of type STRING
-    userID: DataTypes.INTEGER,
-    name: DataTypes.STRING,
-    age: DataTypes.INTEGER,
-    sex: DataTypes.STRING,
+    // Define the User model
+    userID: {
+      // - LC - would like to propose that we change this to "email". Reason being that there is an auto-generated "id" column
+      // having another column like "userID" can be confusing. I'm thinking email might be a way we can have unique accounts
+      // and allow users to log in with their email address. 
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    },
+    sex: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
   });
 
   User.associate = function (models) {
