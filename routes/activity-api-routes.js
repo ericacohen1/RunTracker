@@ -4,7 +4,15 @@ var db = require("../models");
 module.exports = function (app) {
 
     // Add a new activity
-    app.post("/api/activity/new", function(req, res) {
+    // Postman Format:
+    // {
+    //     "UserId": 1,
+    //     "distance": 6.4,
+    //     "totalActivityTime": 80,
+    //     "averagePace": 10,
+    //     "averageSpeed": 5
+    // }
+    app.post("/api/activity", function(req, res) {
         db.Activity.create(req.body).then(function(data) {
           res.json(data);
         });
@@ -33,5 +41,25 @@ module.exports = function (app) {
         });
     });
     // Update an existing activity
+    app.put("/api/activity/:id", function(req, res) {
+        db.Activity.update(
+          req.body,
+          {
+            where: {
+              id: req.params.id
+            }
+          }).then(function(data) {
+            res.json(data);
+          });
+      });
     // Delete an activity
+    app.delete("/api/activity/:id", function(req, res) {
+        db.Activity.destroy({
+          where: {
+            id: req.params.id
+          }
+        }).then(function(data) {
+          res.json(data);
+        });
+      });
 };

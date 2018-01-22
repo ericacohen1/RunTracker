@@ -3,6 +3,13 @@ var db = require("../models");
 
 module.exports = function (app) {
     // Create new user
+    // Postman format:
+    // {
+    //     "userID": 1,
+    //     "name": "lcrouch",
+    //     "age": 41,
+    //     "sex": "M"
+    // }
     app.post("/api/users/new", function (req, res) {
         // Create a User with the data available to us in req.body
         console.log(req.body);
@@ -29,6 +36,4 @@ module.exports = function (app) {
             res.json(data);
         });
     });
-
-
 }
