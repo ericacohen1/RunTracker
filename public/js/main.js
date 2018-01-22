@@ -9,12 +9,7 @@ $(function() {
         $(".form-login").hide();
         $(".form-signup").show();
 
-
-    })
-    $("#login-submit").on("click", function(event) {
-        event.preventDefault();
-
-    })
+    });
 
     // On click hide sign-up screen to begin
     // Show login screen
