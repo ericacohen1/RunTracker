@@ -9,7 +9,7 @@
     crossorigin="anonymous">
   <link rel="stylesheet" href="/public/css/style.css" type="text/css" />
   <script src="https://code.jquery.com/jquery.js"></script>
-  <script src="./js/main.js"></script>
+  <script src="/js/main.js"></script>
   <title>RunTracker</title>
 </head>
 
@@ -21,7 +21,7 @@
           <button type="submit" class="btn btn-default" id="linkToNewUser">New user, click here!</button>
           <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
           <input type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
-          <button type="submit" class="btn btn-default" id="login-submit">Submit</button>
+          <button type="submit" class="btn btn-default" id="user-login-btn">Submit</button>
         </div>
       </div>
     </form>
@@ -31,12 +31,12 @@
       <form>
         <div class="input-group" id="signup">
           <button type="submit" class="btn btn-default">Already a user, click here!</button>
-          <input type="text" class="form-control" placeholder="Name" aria-describedby="sizing-addon2">
-          <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
-          <input type="text" class="form-control" placeholder="Age" aria-describedby="sizing-addon2">
-          <input type="text" class="form-control" placeholder="Sex" aria-describedby="sizing-addon2">
-          <input type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
-          <button type="submit" class="btn btn-default">Submit</button>
+            <input type="text" class="form-control" placeholder="Name" aria-describedby="sizing-addon2" id="user-name">
+            <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2" id="user-email">
+            <input type="text" class="form-control" placeholder="Age" aria-describedby="sizing-addon2" id="user-age">
+            <input type="text" class="form-control" placeholder="Sex" aria-describedby="sizing-addon2" id="user-sex">
+            <input type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon2" id="user-password">
+          <button type="submit" class="btn btn-default" id="user-signup-btn">Submit</button>
         </div>
       </form>
     </div>
