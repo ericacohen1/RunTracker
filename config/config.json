@@ -1,7 +1,12 @@
 {
   "development": {
+<<<<<<< HEAD
     "username": "root",
     "password": "coding123",
+=======
+    "username": "dbuser",
+    "password": "SecureSQLPw%1",
+>>>>>>> c0b02366d01bd054d1b9ec57567e19c90046139e
     "database": "runtracker",
     "host": "127.0.0.1",
     "dialect": "mysql"
