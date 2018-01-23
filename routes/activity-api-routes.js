@@ -17,8 +17,8 @@ module.exports = function (app) {
           res.json(data);
         });
       });
-    // Get all activities
-    app.get("/api/activity/all", function (req, res) {
+    // Get all activities by user id
+    app.get("/api/activity/:id", function (req, res) {
         var query = {};
         if (req.query.userID) {
             query.userID = req.query.userID;
