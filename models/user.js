@@ -1,3 +1,5 @@
+var bcrypt = require("bcrypt-nodejs");
+
 module.exports = function (sequelize, DataTypes) {
   var User = sequelize.define("User", {
     // Define the User model
@@ -6,9 +8,6 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     email: {
-      // - LC - would like to propose that we change this to "email". Reason being that there is an auto-generated "id" column
-      // having another column like "userID" can be confusing. I'm thinking email might be a way we can have unique accounts
-      // and allow users to log in with their email address. 
       type: DataTypes.STRING,
       allowNull: false
     },
@@ -25,6 +24,19 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     }
   });
+
+  // Before we create a new user we will hash 
+  // their password on the way into the database
+  User.beforeCreate(function (model, options) {
+    return new Promise(function (resolve, reject) {
+      bcrypt.hash(model.password, null, null, function (err, hash) {
+        if (err) return reject(err);
+        model.password = hash;
+        return resolve(model, options);
+      });
+    });
+  });
+
 
   User.associate = function (models) {
     // Associating User with Activities
