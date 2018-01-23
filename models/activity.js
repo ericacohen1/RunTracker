@@ -1,17 +1,19 @@
 module.exports = function (sequelize, DataTypes) {
   var Activity = sequelize.define("Activity", {
-    distance: {
-      type: DataTypes.INTEGER,
+    
+    date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+      distance: {
+      type: DataTypes.INTEGER
     },
     //   time in minutes
     totalActivityTime: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    averagePace: {
-      type: DataTypes.INTEGER,
-    },
-    averageSpeed: {
+    pace: {
       type: DataTypes.INTEGER,
     }
   });
