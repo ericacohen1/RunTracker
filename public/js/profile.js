@@ -134,4 +134,3 @@ function displayEmpty(id) {
   runContainer.append(messageh2);
 }
 
-});
