@@ -24,7 +24,7 @@ $(document).ready(function () {
             }).done(function (data) {
                 console.log(data);
             });
-
+            location.reload();
         });
     });
     // runContainer holds all of our posts
