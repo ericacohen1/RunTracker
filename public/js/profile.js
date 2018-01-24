@@ -24,8 +24,9 @@ $(document).ready(function () {
             }).done(function (data) {
                 console.log(data);
             });
-
+            location.reload();
         });
+
     });
     // runContainer holds all of our posts
     var runContainer = $(".run-history-tbody");
@@ -37,17 +38,13 @@ $(document).ready(function () {
     var activities;
 
     // The code below handles the case where we want to get activities for a specific user
-    // Looks for a query param in the url for author_id
-    
+    // Looks for a query param in the url for UserId
+
     if (url.indexOf("?UserId=") !== -1) {
         // userId = url.split("=")[1];
         // console.log("userId", userId);
         getActivities(userId);
     }
-    // If there's no userId we just get all posts as usual
-    // else {
-    //     getActivities();
-    // }
 
     // This function grabs posts from the database and updates the view
     function getActivities(user) {
@@ -94,43 +91,11 @@ $(document).ready(function () {
         // formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
         console.log("activity.distance", activity.distance);
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
-            ($("<td>").append(activity.distance)));
-        // var newactivityPanel = $("<div>");
-        // newActivityPanel.addClass("panel panel-default");
-        // var newActivityPanelHeading = $("<div>");
-        // newActivityPanelHeading.addClass("panel-heading");
-        // var deleteBtn = $("<button>");
-        // deleteBtn.text("x");
-        // deleteBtn.addClass("delete btn btn-danger");
-        // var editBtn = $("<button>");
-        // editBtn.text("EDIT");
-        // editBtn.addClass("edit btn btn-info");
-        // var newActivityTitle = $("<h2>");
-        // var newActivityDate = $("<small>");
-        // var newActivityUser = $("<h5>");
-        // newActivityUser.text("Ran by: " + activity.User.name);
-        // newActivityUser.css({
-        //     float: "right",
-        //     color: "blue",
-        //     "margin-top":
-        //         "-10px"
-        // });
-        // var newActivityPanelBody = $("<div>");
-        // newActivityPanelBody.addClass("panel-body");
-        // var newActivityBody = $("<p>");
-        // newActivityTitle.text(activity.title + " ");
-        // newActivityBody.text(activity.body);
-        // newActivityDate.text(formattedDate);
-        // newActivityTitle.append(newActivityDate);
-        // newActivityPanelHeading.append(deleteBtn);
-        // newActivityPanelHeading.append(editBtn);
-        // newActivityPanelHeading.append(newActivityTitle);
-        // newActivityPanelHeading.append(newActivityUser);
-        // newActivityPanelBody.append(newActivityBody);
-        // newActivityPanel.append(newActivityPanelHeading);
-        // newActivityPanel.append(newActivityPanelBody);
-        // newActivityPanel.data("activity", activity);
-        // return newActivityPanel;
+            ($("<td>").append(activity.distance),
+            $("<td>").append(activity.totalActivityTime),
+            $("<td>").append(activity.averagePace),
+            $("<td>").append(activity.averageSpeed))
+        );
     }
 
     // This function figures out which post we want to delete and then calls deletePost
