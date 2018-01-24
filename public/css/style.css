@@ -1,0 +1,8 @@
+/* Client-side input validation */
+input:invalid {
+    border: 1px solid red;
+  }
+  
+  input:valid {
+    border: 2px solid black;
+  }
