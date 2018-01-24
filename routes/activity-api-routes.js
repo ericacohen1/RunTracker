@@ -12,13 +12,13 @@ module.exports = function (app) {
     //     "averagePace": 10,
     //     "averageSpeed": 5
     // }
-    app.post("/api/activity", function(req, res) {
-        db.Activity.create(req.body).then(function(data) {
-          res.json(data);
-        }).catch(function(err) {
+    app.post("/api/activity", function (req, res) {
+        db.Activity.create(req.body).then(function (data) {
+            res.json(data);
+        }).catch(function (err) {
             console.log(err);
         });
-      });
+    });
     // Get all activities by user id
     app.get("/api/activity/:id", function (req, res) {
         var query = {};
@@ -29,7 +29,7 @@ module.exports = function (app) {
             where: query
         }).then(function (data) {
             res.json(data);
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.log(err);
         });
     });
@@ -41,35 +41,35 @@ module.exports = function (app) {
             }
         }).then(function (data) {
             console.log(data);
-            res.json(data);
-        }).catch(function(err) {
+            res.json(data)
+        }).catch(function (err) {
             console.log(err);
         });
     });
     // Update an existing activity
-    app.put("/api/activity/:id", function(req, res) {
+    app.put("/api/activity/:id", function (req, res) {
         db.Activity.update(
-          req.body,
-          {
-            where: {
-              id: req.params.id
-            }
-          }).then(function(data) {
-            res.json(data);
-          }).catch(function(err) {
-            console.log(err);
-        });
-      });
+            req.body,
+            {
+                where: {
+                    id: req.params.id
+                }
+            }).then(function (data) {
+                res.json(data);
+            }).catch(function (err) {
+                console.log(err);
+            });
+    });
     // Delete an activity
-    app.delete("/api/activity/:id", function(req, res) {
+    app.delete("/api/activity/:id", function (req, res) {
         db.Activity.destroy({
-          where: {
-            id: req.params.id
-          }
-        }).then(function(data) {
-          res.json(data);
-        }).catch(function(err) {
+            where: {
+                id: req.params.id
+            }
+        }).then(function (data) {
+            res.json(data);
+        }).catch(function (err) {
             console.log(err);
         });
-      });
+    });
 };

@@ -7,7 +7,12 @@ module.exports = function (app) {
         res.sendFile(path.join(__dirname, "../public/profile.html"));
     });
 
-    app.get("/signup", function(req, res){
+    // activity/edit route loads activity.html
+    app.get("/activity", function (req, res) {
+        res.sendFile(path.join(__dirname, "../public/activity.html"));
+    });
+    
+    app.get("/signup", function (req, res) {
         res.sendFile(path.join(__dirname, "../public/signup.html"));
     });
 };

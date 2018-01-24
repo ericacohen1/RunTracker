@@ -4,24 +4,18 @@ $(document).ready(function () {
     var userId;
     if (url.indexOf("?UserId=") !== -1) {
         userId = url.split("=")[1];
-        console.log("userId", userId);
+        // console.log("userId", userId);
     }
 
     $(function () {
         $("#new-workout").on("click", function (e) {
             e.preventDefault();
             var newActivityObj = {
-<<<<<<< HEAD
-                distance: parseInt($("#totalDistance").val().trim()),
-                totalActivityTime: parseInt($("#totalRunTime").val().trim()),
-=======
                 date: $("#activityDate").val().trim(),
                 distance: $("#totalDistance").val().trim(),
                 totalActivityTime: $("#totalRunTime").val().trim(),
->>>>>>> master
                 UserId: userId,
-                pace: parseInt(this.distance)/parseInt(this.totalActivityTime),
-                date: $("#runDate").val().trim()
+                pace: 7
             };
 
             $.ajax({
@@ -29,7 +23,7 @@ $(document).ready(function () {
                 url: "/api/activity",
                 data: newActivityObj
             }).done(function (data) {
-                console.log(data);
+                // console.log(data);
             });
             location.reload();
         });
@@ -86,7 +80,7 @@ $(document).ready(function () {
     }
 
     // This function does an API call to delete posts
-    function deletePost(id) {
+    function deleteRecord(id) {
         $.ajax({
             method: "DELETE",
             url: "/api/activity/" + id
@@ -113,10 +107,10 @@ $(document).ready(function () {
             ($("<td>").append(momentDate),
             $("<td>").append(activity.distance),
             $("<td>").append(activity.totalActivityTime),
-            $("<td>").append(activity.averagePace),
-            $("<td>").append(activity.averageSpeed),
-            $("<td>").append("<button onclick='editRecord()' class='btn btn-primary' data-action='edit' aria-hidden='true'>Edit</button>"),
-            $("<td>").append("<button onclick='deleteRecord()' class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>"))
+            $("<td>").append(activity.pace),
+            $("<td>").append("<button class='edit btn btn-primary' data-activity-id='" + activity.id + "' aria-hidden='true'>Edit</button>"),
+            $("<td>").append("<button class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>")
+        )
         );
     }
 
@@ -125,17 +119,21 @@ $(document).ready(function () {
         var currentPost = $(this)
             .parent()
             .parent()
-            .data("post");
+            .data("activity");
         deletePost(currentPost.id);
     }
 
-    // This function figures out which post we want to edit and takes it to the appropriate url
+    // This function figures out which activity we want to edit and takes it to the appropriate url
     function handleActivityEdit() {
-        var currentPost = $(this)
-            .parent()
-            .parent()
-            .data("post");
-        window.location.href = "/cms?post_id=" + currentPost.id;
+        var activityId = $(this).attr("data-activity-id");
+        console.log("this.attr('data-activity-id)'",$(this).attr("data-activity-id"));
+        // var currentActivity = $(this)
+        //     .parent()
+        //     .parent()
+        //     .data("data-activity-id");
+        //     console.log("currentActivity",currentActivity);
+            // .attr("data-activity-id");
+        window.location.href = "/activity?activity_id=" + activityId;
     }
 
     // This function displays a messgae when there are no posts
