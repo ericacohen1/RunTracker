@@ -7,21 +7,26 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
     crossorigin="anonymous">
-  <link rel="stylesheet" href="/public/css/style.css" type="text/css" />
+  <link rel="stylesheet" href="/css/style.css" type="text/css" />
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="/js/main.js"></script>
   <title>RunTracker</title>
 </head>
 
 <body>
+  
+    <div class="jumbotron" id="usainbolt">
+        <center><h1 id="font-colors">Run Tracker</h1></center>
+        <center><p class="font-color">A handy application used to measure your running routine.</p></center>
+      </div>
+
   <div class="container">
     <form>
       <div class="form-login">
         <div class="input-group" id="login">
-          <!-- <button type="submit" class="btn btn-default" id="linkToNewUser">New Member? Click here!</button> -->
-          <a href="http://localhost:8080/signup">New Member? Click here!</a>
-          <br>
-          <br>
+          <p>New Member?
+            <a href="http://localhost:8080/signup" class="font-color"> Click here!</a>
+          </p>
           <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
           <input type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
           <br>
