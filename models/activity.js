@@ -2,7 +2,7 @@ module.exports = function (sequelize, DataTypes) {
   var Activity = sequelize.define("Activity", {
     
     date: {
-      type: DataTypes.DATE,
+      type: DataTypes.STRING,
       allowNull: false,
     },
       distance: {

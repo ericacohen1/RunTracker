@@ -15,6 +15,8 @@ module.exports = function (app) {
         console.log(req.body);
         db.User.create(req.body).then(function (data) {
             res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
     });
     // Get all users
@@ -23,6 +25,8 @@ module.exports = function (app) {
         // Find all users in the users table
         db.User.findAll({}).then(function (data) {
             res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
     });
     // Get one user by "id" column
@@ -34,7 +38,9 @@ module.exports = function (app) {
             }
         }).then(function (data) {
             res.json(data);
-        });
+        }).catch(function(err) {
+            console.log(err);
+        }); 
     });
 
     app.put("/api/users/:id", function(req, res){
@@ -44,10 +50,11 @@ module.exports = function (app) {
                 where: {
                     id: req.body.id
                 }
-            }.then(function(data) {
-                res.json(data)
-            })
-        )
+        }).then(function(data) {
+            res.json(data)
+        }).catch(function(err) {
+            console.log(err);
+        }); 
     });
 }
 

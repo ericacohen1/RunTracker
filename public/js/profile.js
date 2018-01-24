@@ -10,11 +10,11 @@ $(document).ready(function () {
         $("#new-workout").on("click", function (e) {
             e.preventDefault();
             var newActivityObj = {
-                distance: $("#totalDistance").val().trim(),
-                totalActivityTime: $("#totalRunTime").val().trim(),
+                distance: parseInt($("#totalDistance").val().trim()),
+                totalActivityTime: parseInt($("#totalRunTime").val().trim()),
                 UserId: userId,
-                averagePace: 7,
-                averageSpeed: 8,
+                pace: parseInt(this.distance)/parseInt(this.totalActivityTime),
+                date: $("#runDate").val().trim()
             };
 
             $.ajax({

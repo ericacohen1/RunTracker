@@ -15,6 +15,8 @@ module.exports = function (app) {
     app.post("/api/activity", function(req, res) {
         db.Activity.create(req.body).then(function(data) {
           res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
       });
     // Get all activities by user id
@@ -27,6 +29,8 @@ module.exports = function (app) {
             where: query
         }).then(function (data) {
             res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
     });
     // Get a single activity
@@ -38,6 +42,8 @@ module.exports = function (app) {
         }).then(function (data) {
             console.log(data);
             res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
     });
     // Update an existing activity
@@ -50,7 +56,9 @@ module.exports = function (app) {
             }
           }).then(function(data) {
             res.json(data);
-          });
+          }).catch(function(err) {
+            console.log(err);
+        });
       });
     // Delete an activity
     app.delete("/api/activity/:id", function(req, res) {
@@ -60,6 +68,8 @@ module.exports = function (app) {
           }
         }).then(function(data) {
           res.json(data);
+        }).catch(function(err) {
+            console.log(err);
         });
       });
 };
