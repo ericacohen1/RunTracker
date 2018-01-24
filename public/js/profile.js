@@ -4,17 +4,18 @@ $(document).ready(function () {
     var userId;
     if (url.indexOf("?UserId=") !== -1) {
         userId = url.split("=")[1];
-        console.log("userId", userId);
+        // console.log("userId", userId);
     }
+
     $(function () {
         $("#new-workout").on("click", function (e) {
             e.preventDefault();
             var newActivityObj = {
+                date: $("#activityDate").val().trim(),
                 distance: $("#totalDistance").val().trim(),
                 totalActivityTime: $("#totalRunTime").val().trim(),
                 UserId: userId,
-                averagePace: 7,
-                averageSpeed: 8,
+                pace: 7
             };
 
             $.ajax({
@@ -22,7 +23,7 @@ $(document).ready(function () {
                 url: "/api/activity",
                 data: newActivityObj
             }).done(function (data) {
-                console.log(data);
+                // console.log(data);
             });
             location.reload();
         });
@@ -34,16 +35,30 @@ $(document).ready(function () {
     // Click events for the edit and delete buttons
     $(document).on("click", "button.delete", handleActivityDelete);
     $(document).on("click", "button.edit", handleActivityEdit);
+
     // Variable to hold our activities
     var activities;
-
+    // Variable to hold our user data
+    var userData;
     // The code below handles the case where we want to get activities for a specific user
     // Looks for a query param in the url for UserId
 
     if (url.indexOf("?UserId=") !== -1) {
         // userId = url.split("=")[1];
         // console.log("userId", userId);
+        getUserData(userId);
         getActivities(userId);
+    }
+
+    // This function grabs posts from the database and updates the view
+    function getUserData(user) {
+        userId = user || "";
+        $.get("/api/users/" + userId, function (data) {
+            console.log("UserData", data);
+            userData = data;
+            $("#user-name").text(userData.name + "'s");
+        });
+
     }
 
     // This function grabs posts from the database and updates the view
@@ -65,7 +80,7 @@ $(document).ready(function () {
     }
 
     // This function does an API call to delete posts
-    function deletePost(id) {
+    function deleteRecord(id) {
         $.ajax({
             method: "DELETE",
             url: "/api/activity/" + id
@@ -87,14 +102,15 @@ $(document).ready(function () {
 
     // This function constructs a post's HTML
     function createNewRow(activity) {
-        // var formattedDate = new Date(activity.createdAt);
-        // formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
-        console.log("activity.distance", activity.distance);
+        var momentDate = moment(activity.date).format("LL");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
-            ($("<td>").append(activity.distance),
+            ($("<td>").append(momentDate),
+            $("<td>").append(activity.distance),
             $("<td>").append(activity.totalActivityTime),
-            $("<td>").append(activity.averagePace),
-            $("<td>").append(activity.averageSpeed))
+            $("<td>").append(activity.pace),
+            $("<td>").append("<button class='edit btn btn-primary' data-activity-id='" + activity.id + "' aria-hidden='true'>Edit</button>"),
+            $("<td>").append("<button class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>")
+        )
         );
     }
 
@@ -103,17 +119,21 @@ $(document).ready(function () {
         var currentPost = $(this)
             .parent()
             .parent()
-            .data("post");
+            .data("activity");
         deletePost(currentPost.id);
     }
 
-    // This function figures out which post we want to edit and takes it to the appropriate url
+    // This function figures out which activity we want to edit and takes it to the appropriate url
     function handleActivityEdit() {
-        var currentPost = $(this)
-            .parent()
-            .parent()
-            .data("post");
-        window.location.href = "/cms?post_id=" + currentPost.id;
+        var activityId = $(this).attr("data-activity-id");
+        console.log("this.attr('data-activity-id)'",$(this).attr("data-activity-id"));
+        // var currentActivity = $(this)
+        //     .parent()
+        //     .parent()
+        //     .data("data-activity-id");
+        //     console.log("currentActivity",currentActivity);
+            // .attr("data-activity-id");
+        window.location.href = "/activity?activity_id=" + activityId;
     }
 
     // This function displays a messgae when there are no posts
@@ -121,7 +141,7 @@ $(document).ready(function () {
         var query = window.location.search;
         var partial = "";
         if (id) {
-            partial = " for User #" + id;
+            partial = " for User: " + userData.name;
         }
         runContainer.empty();
         var messageh2 = $("<h2>");
