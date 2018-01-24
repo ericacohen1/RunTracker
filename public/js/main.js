@@ -1,13 +1,18 @@
 $(function() {
-    $(".form-signup").hide();
+    // $(".form-signup").hide();
     // On click hide login screen to begin
     // Show sign-up screen
 
     // change to new user signup
     $("#linkToNewUser").on("click", function(event) {
         event.preventDefault();
-        $(".form-login").hide();
-        $(".form-signup").show();
+        window.location.href = "/signup";
+
+    });
+
+    $("#already-member").on("click", function(event) {
+        event.preventDefault();
+        window.location.href = "/";
 
     });
 
