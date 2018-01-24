@@ -59,7 +59,7 @@ $(document).ready(function () {
             userData = data;
             $("#user-name").text(userData.name + "'s");
         });
-        
+
     }
 
     // This function grabs posts from the database and updates the view
@@ -103,17 +103,15 @@ $(document).ready(function () {
 
     // This function constructs a post's HTML
     function createNewRow(activity) {
-        // var formattedDate = new Date(activity.createdAt);
-        // formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
-        console.log("activity.distance", activity.distance);
+        var momentDate = moment(activity.date).format("LL");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
-            ($("<td>").append(activity.date),
+            ($("<td>").append(momentDate),
             $("<td>").append(activity.distance),
             $("<td>").append(activity.totalActivityTime),
             $("<td>").append(activity.averagePace),
             $("<td>").append(activity.averageSpeed),
             $("<td>").append("<button onclick='editRecord()' class='btn btn-primary' data-action='edit' aria-hidden='true'>Edit</button>"),
-        $("<td>").append("<button onclick='deleteRecord()' class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>"))
+            $("<td>").append("<button onclick='deleteRecord()' class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>"))
         );
     }
 
