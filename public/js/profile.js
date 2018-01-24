@@ -71,7 +71,9 @@ $(document).ready(function () {
             console.log("Activities", data);
             console.log("this is the user id: " + userId);
             activities = data;
-            // console.log(userId.activities);
+            //console.log("test" + JSON.stringify(activities[userId]));
+            //window.location.href = "http://localhost:8080/profile?UserId="+data.id;
+        
             if (!activities || !activities.length) {
                 displayEmpty(user);
             }
