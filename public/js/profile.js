@@ -6,10 +6,12 @@ $(document).ready(function () {
         userId = url.split("=")[1];
         console.log("userId", userId);
     }
+
     $(function () {
         $("#new-workout").on("click", function (e) {
             e.preventDefault();
             var newActivityObj = {
+                date: $("#activityDate").val().trim(),
                 distance: $("#totalDistance").val().trim(),
                 totalActivityTime: $("#totalRunTime").val().trim(),
                 UserId: userId,
@@ -34,16 +36,30 @@ $(document).ready(function () {
     // Click events for the edit and delete buttons
     $(document).on("click", "button.delete", handleActivityDelete);
     $(document).on("click", "button.edit", handleActivityEdit);
+
     // Variable to hold our activities
     var activities;
-
+    // Variable to hold our user data
+    var userData;
     // The code below handles the case where we want to get activities for a specific user
     // Looks for a query param in the url for UserId
 
     if (url.indexOf("?UserId=") !== -1) {
         // userId = url.split("=")[1];
         // console.log("userId", userId);
+        getUserData(userId);
         getActivities(userId);
+    }
+
+    // This function grabs posts from the database and updates the view
+    function getUserData(user) {
+        userId = user || "";
+        $.get("/api/users/" + userId, function (data) {
+            console.log("UserData", data);
+            userData = data;
+            $("#user-name").text(userData.name + "'s");
+        });
+
     }
 
     // This function grabs posts from the database and updates the view
@@ -87,14 +103,15 @@ $(document).ready(function () {
 
     // This function constructs a post's HTML
     function createNewRow(activity) {
-        // var formattedDate = new Date(activity.createdAt);
-        // formattedDate = moment(formattedDate).format("MMMM Do YYYY, h:mm:ss a");
-        console.log("activity.distance", activity.distance);
+        var momentDate = moment(activity.date).format("LL");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
-            ($("<td>").append(activity.distance),
+            ($("<td>").append(momentDate),
+            $("<td>").append(activity.distance),
             $("<td>").append(activity.totalActivityTime),
             $("<td>").append(activity.averagePace),
-            $("<td>").append(activity.averageSpeed))
+            $("<td>").append(activity.averageSpeed),
+            $("<td>").append("<button onclick='editRecord()' class='btn btn-primary' data-action='edit' aria-hidden='true'>Edit</button>"),
+            $("<td>").append("<button onclick='deleteRecord()' class='btn btn-primary' data-action='delete' aria-hidden='true'>Delete</button>"))
         );
     }
 
@@ -121,7 +138,7 @@ $(document).ready(function () {
         var query = window.location.search;
         var partial = "";
         if (id) {
-            partial = " for User #" + id;
+            partial = " for User: " + userData.name;
         }
         runContainer.empty();
         var messageh2 = $("<h2>");
