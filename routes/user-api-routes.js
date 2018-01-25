@@ -2,14 +2,6 @@
 var db = require("../models");
 var bcrypt = require("bcrypt-nodejs");
 module.exports = function (app) {
-    // Create new user
-    // Postman format:
-    // {
-    //     "userID": 1,
-    //     "name": "lcrouch",
-    //     "age": 41,
-    //     "sex": "M"
-    // }
     app.post("/api/users/new", function (req, res) {
         // Create a User with the data available to us in req.body
         console.log(req.body);
