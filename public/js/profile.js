@@ -4,7 +4,7 @@ $(document).ready(function () {
     var userId;
     if (url.indexOf("?UserId=") !== -1) {
         userId = url.split("=")[1];
-        // console.log("userId", userId);
+         console.log("userId", userId);
     }
 
     $(function () {
@@ -69,7 +69,11 @@ $(document).ready(function () {
         // }
         $.get("/api/activity/" + userId, function (data) {
             console.log("Activities", data);
+            console.log("this is the user id: " + userId);
             activities = data;
+            //console.log("test" + JSON.stringify(activities[userId]));
+            //window.location.href = "http://localhost:8080/profile?UserId="+data.id;
+        
             if (!activities || !activities.length) {
                 displayEmpty(user);
             }
