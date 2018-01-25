@@ -13,7 +13,7 @@ input:invalid {
   }
 
 #font-colors {
-  color: rgb(231, 0, 52);
+  color: rgb(245, 111, 82);
   text-shadow:
     -1px -1px 0 #000,
     1px -1px 0 #000,
@@ -26,7 +26,8 @@ input:invalid {
   }
 
   body {
-    background-image: url("http://wallpapersin4k.net/wp-content/uploads/2017/02/Humor-Comic-Wallpapers.jpg");
+    background-image: url("https://i.imgur.com/RuLq4zC.jpg");
+    background-position: 45% 55%;
   }
 
   #usainbolt {
