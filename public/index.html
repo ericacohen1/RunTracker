@@ -14,16 +14,21 @@
 </head>
 
 <body>
+  
+    <div class="jumbotron" id="usainbolt">
+        <center><h1 id="font-colors">Run Tracker</h1></center>
+        <center><p id="font-colors">A handy application used to measure your running routine.</p></center>
+      </div>
+
   <div class="container">
     <form>
       <div class="form-login">
         <div class="input-group" id="login">
-          <!-- <button type="submit" class="btn btn-default" id="linkToNewUser">New Member? Click here!</button> -->
-          <a href="http://localhost:8080/signup">New Member? Click here!</a>
-          <br>
-          <br>
-          <input type="text" class="form-control" id="user-email" placeholder="Email" aria-describedby="sizing-addon2">
-          <input type="password" class="form-control" id="user-password" placeholder="Password" aria-describedby="sizing-addon2">
+          <p>New Member?
+            <a href="http://localhost:8080/signup" class="font-color"> Click here!</a>
+          </p>
+          <input type="text" class="form-control" placeholder="Email" aria-describedby="sizing-addon2">
+          <input type="text" class="form-control" placeholder="Password" aria-describedby="sizing-addon2">
           <br>
           <button type="submit" class="btn btn-default" id="user-login-btn">Submit</button>
         </div>
