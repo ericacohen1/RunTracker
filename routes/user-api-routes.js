@@ -1,6 +1,6 @@
 // Requiring our models
 var db = require("../models");
-
+var bcrypt = require("bcrypt-nodejs");
 module.exports = function (app) {
     // Create new user
     // Postman format:
@@ -19,6 +19,7 @@ module.exports = function (app) {
             console.log(err);
         });
     });
+
     // Get all users
     // This route needs to be BEFORE the findOne user route
     app.get("/api/users/all", function (req, res) {
@@ -29,6 +30,26 @@ module.exports = function (app) {
             console.log(err);
         });
     });
+    app.post("/api/users", function (req, res) {
+        
+        // console.log("hello", req.body);
+        db.User.findOne({
+            where: {
+                email: req.body.email,
+            }
+        }).then(function (data) {
+            var res1 = res
+            bcrypt.compare(req.body.password, data.password, function(err, res) {
+                if(res) {
+                   res1.json(data)
+                }else {return}
+            });
+            
+        }).catch(function(error) {
+            res.send(error);
+        })
+    });
+    
     // Get one user by "id" column
     app.get("/api/users/:id", function (req, res) {
         // Find one user with the id in req.params.id and return them to the user with res.json
