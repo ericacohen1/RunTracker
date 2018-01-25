@@ -20,13 +20,11 @@ module.exports = function (app) {
         });
     });
     // Get all activities by user id
-    app.get("/api/activity/:id", function (req, res) {
-        var query = {};
-        if (req.query.userID) {
-            query.userID = req.query.userID;
-        }
+    app.get("/api/activity/:UserID", function (req, res) {
         db.Activity.findAll({
-            where: query
+            where: {
+                UserID: req.params.UserID
+            }
         }).then(function (data) {
             res.json(data);
         }).catch(function (err) {

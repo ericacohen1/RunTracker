@@ -79,6 +79,12 @@ $(document).ready(function () {
         $.get("/api/activity/" + userId, function (data) {
             activities = data;
             // console.log("Activities", activities);
+            console.log("Activities", data);
+            console.log("this is the user id: " + userId);
+            activities = data;
+            //console.log("test" + JSON.stringify(activities[userId]));
+            //window.location.href = "http://localhost:8080/profile?UserId="+data.id;
+        
             if (!activities || !activities.length) {
                 displayEmpty();
             }
