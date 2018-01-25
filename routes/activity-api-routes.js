@@ -24,7 +24,8 @@ module.exports = function (app) {
         db.Activity.findAll({
             where: {
                 UserID: req.params.UserID
-            }
+            },
+            order: [["date", "DESC"]],
         }).then(function (data) {
             res.json(data);
         }).catch(function (err) {

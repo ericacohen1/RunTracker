@@ -6,7 +6,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
       distance: {
-      type: DataTypes.INTEGER
+      type: DataTypes.DECIMAL(10,1)
     },
     //   time in minutes
     totalActivityTime: {
@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
     pace: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DECIMAL(10,2),
     }
   });
 
