@@ -21,15 +21,16 @@ $(function() {
 
     $("#user-login-btn").on("click", function(e) {
         e.preventDefault();
-        var userObj = {
+        var returningUserObj = {
             email: $("#user-email").val().trim(),
             password: $("#user-password").val().trim()
         };
+        // console.log("object ", returningUserObj);
 
         $.ajax({
             method: "POST",
-            url: "/api/users/new",
-            data: userObj
+            url: "/api/users",
+            data: returningUserObj
         }).done(function(data){
             console.log(data);
             window.location.href = "http://localhost:8080/profile?UserId="+data.id
