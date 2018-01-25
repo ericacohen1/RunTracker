@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // hide the New\Edit activity div
     toggleElement(".new-activity", "hide");
-    
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // declare objects and variables
     var newActivityObj;
@@ -51,7 +51,7 @@ $(document).ready(function () {
             distance: $("#totalDistance").val().trim(),
             totalActivityTime: $("#totalRunTime").val().trim(),
             UserId: userId,
-            pace: 7
+            pace: calculatePace($("#totalDistance").val().trim(), $("#totalRunTime").val().trim())
         };
 
         $.ajax({
@@ -70,7 +70,7 @@ $(document).ready(function () {
             // console.log("UserData", data);
             userData = data;
             // Sets the id "user-name to display the username"
-            setText("#user-name",userData.name + "'s");
+            setText("#user-name", userData.name + "'s");
         });
     }
 
@@ -79,12 +79,12 @@ $(document).ready(function () {
         $.get("/api/activity/" + userId, function (data) {
             activities = data;
             // console.log("Activities", activities);
-            console.log("Activities", data);
-            console.log("this is the user id: " + userId);
+            // console.log("Activities", data);
+            // console.log("this is the user id: " + userId);
             activities = data;
             //console.log("test" + JSON.stringify(activities[userId]));
             //window.location.href = "http://localhost:8080/profile?UserId="+data.id;
-        
+
             if (!activities || !activities.length) {
                 displayEmpty();
             }
@@ -102,13 +102,14 @@ $(document).ready(function () {
             distance: $("#totalDistance").val().trim(),
             totalActivityTime: $("#totalRunTime").val().trim(),
             UserId: userId,
-            pace: 7
+            pace: calculatePace($("#totalDistance").val().trim(), $("#totalRunTime").val().trim())
         }
         $.ajax({
             method: "PUT",
             url: "/api/activity/" + activityId,
             data: updatedActivity
         }).then(function () {
+            toggleElement(".new-activity","hide");
             location.reload();
         });
     }
@@ -130,6 +131,7 @@ $(document).ready(function () {
     function createNewRow(activity) {
         // creates new td's within the row with data from the current activity object
         var momentDate = moment(activity.date).format("LL");
+        // var momentTime = moment(activity.totalActivityTime).format("mm");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
             ($("<td>").append(momentDate),
             $("<td>").append(activity.distance),
@@ -148,7 +150,7 @@ $(document).ready(function () {
         // console.log("this.attr('data-activity-id)'", $(this).attr("data-activity-id"));
         // convert to integer
         activityId = parseInt(activityId);
-        
+
         $.ajax({
             method: "DELETE",
             url: "/api/activity/" + activityId
@@ -202,21 +204,21 @@ $(document).ready(function () {
         }
 
     }
-    
+
     function handleNewActivity() {
         // console.log("in handleNewActivity");
         setText(".span-title", "Enter a new run:");
         // hide the update activity button
         toggleElement(".update-activity", "hide");
-        
+
         // show the new activity submit button
         toggleElement(".new-activity", "show");
-        
+
         // show the add-activity button
         toggleElement(".add-activity", "show");
     }
 
-    
+
     function handleActivityEdit() {
         // This function figures out which activity we want to edit and takes it to the appropriate url
         // console.log("in handleActivityEdit");
@@ -246,7 +248,7 @@ $(document).ready(function () {
 
         // show the update activity button
         toggleElement(".update-activity", "show");
-               
+
         // hide the add-activity button
         toggleElement(".add-activity", "hide");
 
@@ -259,6 +261,12 @@ $(document).ready(function () {
         $("#activityDate").val("");
         $("#totalDistance").val("");
         $("#totalRunTime").val("");
+    }
+
+    function calculatePace(distance, minutes) {
+        // convert time into seconds
+        // var totalMinutes = hours * 60 + minutes + seconds / 60,
+		return minutes / distance;
     }
 
     function cancelNewActivity() {
@@ -276,7 +284,7 @@ $(document).ready(function () {
             clearFields();
         }
     }
-    
+
     function displayEmpty() {
         // This function displays a message when there are no posts
         var query = window.location.search;
