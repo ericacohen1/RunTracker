@@ -130,7 +130,7 @@ $(document).ready(function () {
 
     function createNewRow(activity) {
         // creates new td's within the row with data from the current activity object
-        var momentDate = moment(activity.date).format("LL");
+        var momentDate = moment.utc(activity.date).format("LL");
         // var momentTime = moment(activity.totalActivityTime).format("mm");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
             ($("<td>").append(momentDate),
