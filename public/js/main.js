@@ -33,7 +33,7 @@ $(function() {
             data: returningUserObj
         }).done(function(data){
             console.log(data);
-            window.location.href = "http://localhost:8080/profile?UserId="+data.id
+            window.location.href = "/profile?UserId="+data.id
         });
 
 
@@ -54,7 +54,7 @@ $(function() {
             data: userObj
         }).done(function(data){
             console.log(data);
-            window.location.href = "http://localhost:8080/profile?UserId="+data.id
+            window.location.href = "/profile?UserId="+data.id
         });
 
 
