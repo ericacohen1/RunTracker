@@ -295,7 +295,7 @@ $(document).ready(function () {
         runContainer.empty();
         var messageh2 = $("<h2>");
         messageh2.css({ "text-align": "center", "margin-top": "50px" });
-        messageh2.html("No activities yet" + partial + ", click 'Add Run' to get started.");
+        messageh2.html("No activities yet" + partial + ", click Add Run <br>  to get started.");
         runContainer.append(messageh2);
     }
 
