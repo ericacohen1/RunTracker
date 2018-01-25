@@ -1,88 +1,86 @@
 $(document).ready(function () {
-    /* global moment */
-    // set the property data-visible to hidden
-    $(".new-activity").attr("data-visible", "hidden");
-    // hide the new activity
-    $(".new-activity").hide()
-
-    toggleNewActivity();
+    // hide the New\Edit activity div
+    toggleElement(".new-activity", "hide");
+    
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // declare objects and variables
+    var newActivityObj;
     var activityId;
     var updateActivity;
     var url = window.location.search;
     var userId;
+    // Variable to hold our activities from the database
+    var activities;
+    // Variable to hold our user data from the database
+    var userData;
+
+    // runContainer holds all of our activities
+    var runContainer = $(".run-history-tbody");
+
+    // Sets the user ID to the url value
     if (url.indexOf("?UserId=") !== -1) {
         userId = url.split("=")[1];
-        // console.log("userId", userId);
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-    $(function () {
-        $(".add-activity").on("click", function (e) {
-            e.preventDefault();
-            var newActivityObj = {
-                date: $("#activityDate").val().trim(),
-                distance: $("#totalDistance").val().trim(),
-                totalActivityTime: $("#totalRunTime").val().trim(),
-                UserId: userId,
-                pace: 7
-            };
-
-            $.ajax({
-                method: "POST",
-                url: "/api/activity",
-                data: newActivityObj
-            }).done(function (data) {
-                // console.log(data);
-            });
-            location.reload();
-        });
-
-    });
-    // runContainer holds all of our posts
-    var runContainer = $(".run-history-tbody");
-    var postCategorySelect = $("#category");
-    // Click events for the edit and delete buttons
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Click events for all buttons
     $(document).on("click", "button.delete", handleActivityDelete);
     $(document).on("click", "button.edit", handleActivityEdit);
     $(document).on("click", "button.toggle-activity", handleNewActivity);
     $(document).on("click", "button.cancel-activity", cancelNewActivity);
     $(document).on("click", "button.update-activity", updateActivity);
+    $(document).on("click", "button.add-activity", createNewActivty);
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-    // Variable to hold our activities
-    var activities;
-    // Variable to hold our user data
-    var userData;
-    // The code below handles the case where we want to get activities for a specific user
-    // Looks for a query param in the url for UserId
+    // Gets user data from the user table
+    getUserData();
+    // gets activity data by used id
+    getActivities();
 
-    if (url.indexOf("?UserId=") !== -1) {
-        // userId = url.split("=")[1];
-        // console.log("userId", userId);
-        getUserData(userId);
-        getActivities(userId);
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Functions
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // database operations functions (CRUD)
+
+    function createNewActivty() {
+        // creates a new activity in the activities table
+        newActivityObj = {
+            date: $("#activityDate").val().trim(),
+            distance: $("#totalDistance").val().trim(),
+            totalActivityTime: $("#totalRunTime").val().trim(),
+            UserId: userId,
+            pace: 7
+        };
+
+        $.ajax({
+            method: "POST",
+            url: "/api/activity",
+            data: newActivityObj
+        }).done(function (data) {
+            // console.log(data);
+        });
+        location.reload();
     }
 
-    // This function grabs posts from the database and updates the view
-    function getUserData(user) {
-        userId = user || "";
+    function getUserData() {
+        // grabs userdata from the user table and stores values in the userData object
         $.get("/api/users/" + userId, function (data) {
             console.log("UserData", data);
             userData = data;
-            $("#user-name").text(userData.name + "'s");
+            // Sets the id "user-name to display the username"
+            setText("#user-name",userData.name + "'s");
         });
-
     }
 
-    // This function grabs posts from the database and updates the view
-    function getActivities(user) {
-        userId = user || "";
-        // if (userId) {
-        //     userId = "/?UserId=" + userId;
-        // }
+    function getActivities() {
+        // grabs activities from the activity table and updates the view
         $.get("/api/activity/" + userId, function (data) {
-            console.log("Activities", data);
             activities = data;
+            console.log("Activities", activities);
             if (!activities || !activities.length) {
-                displayEmpty(user);
+                displayEmpty();
             }
             else {
                 initializeRows();
@@ -90,19 +88,31 @@ $(document).ready(function () {
         });
     }
 
-    // This function does an API call to delete posts
-    function deleteRecord(id) {
+    function updateActivity() {
+        // Update an activity
+        updatedActivity = {
+            id: activityId,
+            date: $("#activityDate").val().trim(),
+            distance: $("#totalDistance").val().trim(),
+            totalActivityTime: $("#totalRunTime").val().trim(),
+            UserId: userId,
+            pace: 7
+        }
         $.ajax({
-            method: "DELETE",
-            url: "/api/activity/" + id
-        })
-            .then(function () {
-                getActivities(postCategorySelect.val());
-            });
+            method: "PUT",
+            url: "/api/activity/" + activityId,
+            data: updatedActivity
+        }).then(function () {
+            location.reload();
+        });
     }
+    ///////////////////////////////////////////////////////////////////////////////////////////
 
-    // InitializeRows handles appending all of our constructed post HTML inside blogContainer
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // Data display functions
+
     function initializeRows() {
+        // InitializeRows handles appending all of our constructed post HTML inside blogContainer
         runContainer.empty();
         var activitiesToAdd = [];
         for (var i = 0; i < activities.length; i++) {
@@ -111,8 +121,8 @@ $(document).ready(function () {
         runContainer.append(activitiesToAdd);
     }
 
-    // This function constructs a post's HTML
     function createNewRow(activity) {
+        // creates new td's within the row with data from the current activity object
         var momentDate = moment(activity.date).format("LL");
         $(".run-history-table").find(".run-history-tbody").append($("<tr>").append
             ($("<td>").append(momentDate),
@@ -120,68 +130,90 @@ $(document).ready(function () {
             $("<td>").append(activity.totalActivityTime),
             $("<td>").append(activity.pace),
             $("<td>").append("<button class='edit btn btn-primary' data-activity-id='" + activity.id + "' aria-hidden='true'>Edit</button>"),
-            $("<td>").append("<button class='delete btn btn-danger' data-action='delete' aria-hidden='true'>Delete</button>")
+            $("<td>").append("<button class='delete btn btn-danger' data-activity-id='" + activity.id + "' aria-hidden='true'>Delete</button>")
             )
         );
     }
 
-    // This function figures out which post we want to delete and then calls deletePost
     function handleActivityDelete() {
-        var currentPost = $(this)
-            .parent()
-            .parent()
-            .data("activity");
-        deletePost(currentPost.id);
+        // This function figures out which post we want to delete and then calls deletePost
+        console.log("in handleActivityDelete");
+        activityId = $(this).attr("data-activity-id");
+        console.log("this.attr('data-activity-id)'", $(this).attr("data-activity-id"));
+        // convert to integer
+        activityId = parseInt(activityId);
+        
+        $.ajax({
+            method: "DELETE",
+            url: "/api/activity/" + activityId
+        })
+            .then(function () {
+                location.reload();
+            });
     }
 
-    // function to toggle the new\edit activity div
-    function toggleNewActivity() {
-        var currentState = $(".new-activity").attr("data-visible");
-        console.log("currentState", currentState);
+
+    function readAttr(target, attr) {
+        console.log("In the readAttr function");
+        var readData = $(target).attr(attr);
+        console.log("read: '" + target + "' attribute: '" + attr + "' is: '" + readData + "'");
+        return readData
     }
+
+    function setAttr(target, attr, val) {
+        console.log("In the setAttr function");
+        var setTargetData = $(target).attr(attr, val);
+        console.log("Set: '" + target + "' attribute: '" + attr + "' to: '" + val + "'");
+    }
+
+    function setText(target, val) {
+        console.log("In the setVal function");
+        var setTargetData = $(target).text(val);
+        console.log("Set: '" + target + "' value: '" + val + "'");
+    }
+
+    function toggleElement(element, value) {
+        // show the element
+        console.log("In the toggleElement function");
+        if (value === "show") {
+            console.log("In the toggleElement 'show' function");
+            if (readAttr(element, "data-visible") === "not-set" || readAttr(element, "data-visible") === "hidden") {
+                // Set attribute "data-visible" to visible
+                setAttr(element, "data-visible", "visible");
+                // show the element
+                $(element).show();
+            }
+        }
+        // hide the element
+        if (value === "hide") {
+            console.log("In the toggleElement 'hide' function");
+            if (readAttr(element, "data-visible") === "not-set" || readAttr(element, "data-visible") === "visible") {
+                // Set attribute "data-visible" to hidden
+                setAttr(element, "data-visible", "hidden");
+                // hide the element
+                $(element).hide()
+            }
+        }
+
+    }
+    
     function handleNewActivity() {
-        console.log("in handleNewActivity");
-        // empty existing data
-
-        var currentState = $(".new-activity").attr("data-visible");
-        console.log("currentState", currentState);
-        if (currentState === "hidden") {
-            // set the property data-visible to hidden
-            $(".new-activity").attr("data-visible", "visible");
-            currentState = $(".new-activity").attr("data-visible");
-            console.log("currentState", currentState);
-            // show the new activity div
-            $(".new-activity").show();
-        }
-        // get current state of submit and update button
-        var submitBtnState = $(".add-activity").attr("data-visible");
-        var updateBtnState = $(".update-activity").attr("data-visible");
-        // if submit button is not-set or hidden show it
-        if (submitBtnState === "not-set" || submitBtnState === "hidden") {
-            // show the submit button
-            $(".add-activity").attr("data-visible", "visible");
-            $(".add-activity").show()
-            // hide the update button
-            $(".update-activity").attr("data-visible", "hidden");
-            $(".update-activity").hide()
-        }
-
+        // console.log("in handleNewActivity");
+        setText(".span-title", "Enter a new run:");
+        // hide the update activity button
+        toggleElement(".update-activity", "hide");
+        
+        // show the new activity submit button
+        toggleElement(".new-activity", "show");
+        
+        // show the add-activity button
+        toggleElement(".add-activity", "show");
     }
 
-    // This function figures out which activity we want to edit and takes it to the appropriate url
+    
     function handleActivityEdit() {
+        // This function figures out which activity we want to edit and takes it to the appropriate url
         console.log("in handleActivityEdit");
-        var currentState = $(".new-activity").attr("data-visible");
-        console.log("currentState", currentState);
-        if (currentState === "hidden") {
-            // set the property data-visible to hidden
-            $(".new-activity").attr("data-visible", "visible");
-            currentState = $(".new-activity").attr("data-visible");
-            console.log("currentState", currentState);
-            // hide the new activity
-            $(".new-activity").show();
-
-        }
         activityId = $(this).attr("data-activity-id");
         console.log("this.attr('data-activity-id)'", $(this).attr("data-activity-id"));
         // convert to integer
@@ -202,51 +234,20 @@ $(document).ready(function () {
         $("#activityDate").val(momentDate);
         $("#totalDistance").val(activities[editIndex].distance);
         $("#totalRunTime").val(activities[editIndex].totalActivityTime);
-        // toggle to see the update button and hide the submit button
-        // get the current state of the buttons
-        var submitBtnState = $(".add-activity").attr("data-visible");
-        var updateBtnState = $(".update-activity").attr("data-visible");
-        console.log("submitBtnState", submitBtnState);
-        console.log("updateBtnState", updateBtnState);
-        // if submit is not-set or visible hide it with jQuery
-        if (submitBtnState === "not-set" || submitBtnState === "visible") {
-            $(".add-activity").attr("data-visible", "hidden");
-            $(".add-activity").hide();
-        }
-        // if update button is not-set or hidden show it with jQuery
-        if (updateBtnState === "not-set" || updateBtnState === "hidden") {
-            $(".update-activity").attr("data-visible", "visible");
-            $(".update-activity").show();
-        }
-        // updatedActivity = {
-        //     id: activityId,
-        //     date: $("#activityDate").val().trim(),
-        //     distance: $("#totalDistance").val().trim(),
-        //     totalActivityTime: $("#totalRunTime").val().trim(),
-        //     UserId: userId,
-        //     pace: 7
-        // }
 
+        // set the title
+        setText(".span-title", "Update an existing run:");
+
+        // show the update activity button
+        toggleElement(".update-activity", "show");
+               
+        // hide the add-activity button
+        toggleElement(".add-activity", "hide");
+
+        // show the new activity div
+        toggleElement(".new-activity", "show");
     }
-    function updateActivity() {
-        // activityId = id;
-        // path to update a record: /api/activity/:id
-        updatedActivity = {
-            id: activityId,
-            date: $("#activityDate").val().trim(),
-            distance: $("#totalDistance").val().trim(),
-            totalActivityTime: $("#totalRunTime").val().trim(),
-            UserId: userId,
-            pace: 7
-        }
-        $.ajax({
-            method: "PUT",
-            url: "/api/activity/" + activityId,
-            data: updatedActivity
-        }).then(function () {
-            // location.reload();
-        });
-    }
+
     function clearFields() {
         // clear the new\edit fields
         $("#activityDate").val("");
@@ -269,11 +270,12 @@ $(document).ready(function () {
             clearFields();
         }
     }
-    // This function displays a messgae when there are no posts
-    function displayEmpty(id) {
+    
+    function displayEmpty() {
+        // This function displays a message when there are no posts
         var query = window.location.search;
         var partial = "";
-        if (id) {
+        if (userId) {
             partial = " for User: " + userData.name;
         }
         runContainer.empty();
