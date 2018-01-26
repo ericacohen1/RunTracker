@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    window.history.forward(1);
     // hide the New\Edit activity div
     toggleElement(".new-activity", "hide");
 
