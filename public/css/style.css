@@ -26,26 +26,26 @@ input:invalid {
   }
 
   body {
-    background-image: url("https://i.imgur.com/RuLq4zC.jpg");
     background-position: 45% 55%;
+    background-image: url("../images/body-bg.jpg");
   }
 
   #usainbolt {
-    background-image: url("https://i.imgur.com/MRCb55h.jpg");
+    background-image: url("../images/usain-bolt.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 20% 80%;
   }
 
   #animalrun {
-    background-image: url("https://i.imgur.com/Kol8Hq4.png");
+    background-image: url("../images/cheetah.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
   }
 
   #runs {
-    background-image: url("https://i.imgur.com/2dGR0OS.png");
+    background-image: url("../images/beach-runner.png");
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -67,7 +67,7 @@ input:invalid {
   background-color: rgba(0, 0, 0, 0.803)
 }
 
-td {
+td, .span-title {
 
   color: white;
   text-shadow:
@@ -76,4 +76,12 @@ td {
   -1px 1px 0 #000,
   1px 1px 0 #000;
 
+}
+h2 {
+  color: rgba(255, 255, 255, 0.733);
+  text-shadow:
+  -1px -1px 0 #000,
+  1px -1px 0 #000,
+  -1px 1px 0 #000,
+  1px 1px 0 #000;
 }

@@ -59,7 +59,6 @@ $(document).ready(function () {
             url: "/api/activity",
             data: newActivityObj
         }).done(function (data) {
-            // console.log(data);
         });
         location.reload();
     }
@@ -67,9 +66,7 @@ $(document).ready(function () {
     function getUserData() {
         // grabs userdata from the user table and stores values in the userData object
         $.get("/api/users/" + userId, function (data) {
-            // console.log("UserData", data);
             userData = data;
-            // Sets the id "user-name to display the username"
             setText("#user-name", userData.name + "'s");
         });
     }
@@ -78,13 +75,6 @@ $(document).ready(function () {
         // grabs activities from the activity table and updates the view
         $.get("/api/activity/" + userId, function (data) {
             activities = data;
-            // console.log("Activities", activities);
-            // console.log("Activities", data);
-            // console.log("this is the user id: " + userId);
-            activities = data;
-            //console.log("test" + JSON.stringify(activities[userId]));
-            //window.location.href = "http://localhost:8080/profile?UserId="+data.id;
-
             if (!activities || !activities.length) {
                 displayEmpty();
             }
@@ -145,7 +135,6 @@ $(document).ready(function () {
 
     function handleActivityDelete() {
         // This function figures out which post we want to delete and then calls deletePost
-        // console.log("in handleActivityDelete");
         activityId = $(this).attr("data-activity-id");
         // console.log("this.attr('data-activity-id)'", $(this).attr("data-activity-id"));
         // convert to integer
@@ -162,29 +151,21 @@ $(document).ready(function () {
 
 
     function readAttr(target, attr) {
-        // console.log("In the readAttr function");
         var readData = $(target).attr(attr);
-        // console.log("read: '" + target + "' attribute: '" + attr + "' is: '" + readData + "'");
         return readData
     }
 
     function setAttr(target, attr, val) {
-        // console.log("In the setAttr function");
         var setTargetData = $(target).attr(attr, val);
-        // console.log("Set: '" + target + "' attribute: '" + attr + "' to: '" + val + "'");
     }
 
     function setText(target, val) {
-        // console.log("In the setVal function");
         var setTargetData = $(target).text(val);
-        // console.log("Set: '" + target + "' value: '" + val + "'");
     }
 
     function toggleElement(element, value) {
         // show the element
-        // console.log("In the toggleElement function");
         if (value === "show") {
-            // console.log("In the toggleElement 'show' function");
             if (readAttr(element, "data-visible") === "not-set" || readAttr(element, "data-visible") === "hidden") {
                 // Set attribute "data-visible" to visible
                 setAttr(element, "data-visible", "visible");
@@ -194,7 +175,6 @@ $(document).ready(function () {
         }
         // hide the element
         if (value === "hide") {
-            // console.log("In the toggleElement 'hide' function");
             if (readAttr(element, "data-visible") === "not-set" || readAttr(element, "data-visible") === "visible") {
                 // Set attribute "data-visible" to hidden
                 setAttr(element, "data-visible", "hidden");
@@ -206,7 +186,6 @@ $(document).ready(function () {
     }
 
     function handleNewActivity() {
-        // console.log("in handleNewActivity");
         setText(".span-title", "Enter a new run:");
         // hide the update activity button
         toggleElement(".update-activity", "hide");
@@ -221,9 +200,7 @@ $(document).ready(function () {
 
     function handleActivityEdit() {
         // This function figures out which activity we want to edit and takes it to the appropriate url
-        // console.log("in handleActivityEdit");
         activityId = $(this).attr("data-activity-id");
-        // console.log("this.attr('data-activity-id)'", $(this).attr("data-activity-id"));
         // convert to integer
         activityId = parseInt(activityId);
         // loop through activities array to find the index of the activity we want to edit
@@ -233,12 +210,10 @@ $(document).ready(function () {
 
             if (currentId === activityId) {
                 editIndex = i;
-                // console.log("Index of activity id:", editIndex);
             }
         }
         // populate the edit fields with the activity data
-        var momentDate = moment(activities[editIndex].date).format("MM/DD/YYYY");
-        // console.log("activities[editIndex].date", activities[editIndex].date);
+        var momentDate = moment.utc(activities[editIndex].date).format("MM/DD/YYYY");
         $("#activityDate").val(momentDate);
         $("#totalDistance").val(activities[editIndex].distance);
         $("#totalRunTime").val(activities[editIndex].totalActivityTime);
@@ -264,21 +239,16 @@ $(document).ready(function () {
     }
 
     function calculatePace(distance, minutes) {
-        // convert time into seconds
-        // var totalMinutes = hours * 60 + minutes + seconds / 60,
 		return minutes / distance;
     }
 
     function cancelNewActivity() {
         // cancels an edit or new activity
-        // console.log("in cancelNewActivity");
         var currentState = $(".new-activity").attr("data-visible");
-        // console.log("currentState", currentState);
         if (currentState === "visible") {
             // set the property data-visible to hidden
             $(".new-activity").attr("data-visible", "hidden");
             currentState = $(".new-activity").attr("data-visible");
-            // console.log("currentState", currentState);
             // hide the new activity
             $(".new-activity").hide();
             clearFields();
@@ -290,12 +260,12 @@ $(document).ready(function () {
         var query = window.location.search;
         var partial = "";
         if (userId) {
-            partial = " for User: " + userData.name;
+            partial = " for " + userData.name;
         }
         runContainer.empty();
         var messageh2 = $("<h2>");
-        messageh2.css({ "text-align": "center", "margin-top": "50px" });
-        messageh2.html("No activities yet" + partial + ", click Add Run <br>  to get started.");
+        messageh2.css({ "text-align": "center", "margin-top": "50px"});
+        messageh2.html("No activities yet" + partial + "; click 'Add Run' to get started.");
         runContainer.append(messageh2);
     }
 
