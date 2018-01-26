@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "dbuser",
+    "username": "root",
     "password": "",
     "database": "runtracker",
     "host": "127.0.0.1",
