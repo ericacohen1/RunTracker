@@ -51,9 +51,9 @@ input:invalid {
     background-position: 50% 50%;
   }
 
-    #signup {
+    /* #signup {
       float: left;
-    }
+    } */
 
     #fade {
       color: white;
@@ -84,4 +84,43 @@ h2 {
   1px -1px 0 #000,
   -1px 1px 0 #000,
   1px 1px 0 #000;
+}
+
+#login {
+  text-align: center;
+}
+
+#signup {
+  text-align: center;
+}
+
+#user-signup-btn, .cancel {
+  margin-top: 10px;
+}
+
+.cancel {
+  margin-left: 5px
+}
+
+#user-login-btn {
+  margin-top: 10px;
+}
+
+.input-group {
+  width: 300px; 
+  margin: 0 auto;
+}
+
+input {
+  text-align: center;
+}
+
+#activityDate {
+  text-align: left;
+}
+#totalDistance {
+  text-align: left;
+}
+#totalRunTime {
+  text-align: left;
 }
