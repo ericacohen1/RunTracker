@@ -25,7 +25,6 @@ $(function() {
             email: $("#user-email").val().trim(),
             password: $("#user-password").val().trim()
         };
-        // console.log("object ", returningUserObj);
 
         $.ajax({
             method: "POST",
